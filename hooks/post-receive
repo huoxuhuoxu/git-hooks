@@ -4,9 +4,9 @@ const { info } = require("../tools/colors");
 
 class PostReceive {
 
-    constructor (branch){
+    constructor (branchs){
         this.warehourse = null;
-        this.branch = branch;
+        this.branchs = branchs;
     }
 
     __getWarehourseName (){
@@ -17,7 +17,7 @@ class PostReceive {
 
     exec (){
         this.__getWarehourseName();
-        info("[info] push仓库名: %s, 分支: %s", this.warehourse, this.branch);
+        info("[info] push仓库名: %s, 需要更新的分支: %s", this.warehourse, this.branchs.join(" , "));
     }
 
 }
@@ -30,7 +30,7 @@ class PostReceive {
             // 获取push的分支
             // 可以一次push多个分支, 这里只处理了第一个
             process.stdin.setEncoding('utf8');
-            const branch = await new Promise(resolve => {
+            const branchs = await new Promise(resolve => {
                 const chunks = [];
                 process.stdin.on('readable', () => {
                     const chunk = process.stdin.read();
@@ -41,11 +41,12 @@ class PostReceive {
     
                 process.stdin.on('end', () => {
                     const arr = chunks.join("").trim().split(" ");
-                    resolve(arr[arr.length - 1]);
+                    const branchs = arr.splice(2);
+                    resolve(branchs);
                 });
             });
 
-            const oPostReceive = new PostReceive(branch);
+            const oPostReceive = new PostReceive(branchs);
             oPostReceive.exec();
 
         })();

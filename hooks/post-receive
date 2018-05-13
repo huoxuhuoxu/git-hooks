@@ -40,7 +40,7 @@ class PostReceive {
                 });
     
                 process.stdin.on('end', () => {
-                    const arr = chunks.trim().split(" ");
+                    const arr = chunks.join("").trim().split(" ");
                     resolve(arr[arr.length - 1]);
                 });
             });

@@ -27,8 +27,7 @@ class PostReceive {
 
         (async () => {
 
-            // 获取push的分支
-            // 可以一次push多个分支, 这里只处理了第一个
+            // 获取push的分支, 可以一次push多个分支
             process.stdin.setEncoding('utf8');
             const branchs = await new Promise(resolve => {
                 const chunks = [];

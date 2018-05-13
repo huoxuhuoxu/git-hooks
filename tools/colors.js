@@ -5,7 +5,7 @@ const util = require("util");
 const log = (...args) => {
     let aFormat = args.splice(0, 2);
     let sFormat = util.format(aFormat);
-    console.log(sFormat, args);
+    console.log(sFormat, ...args);
 };
 
 exports.info = (...args) => {

@@ -1,5 +1,32 @@
 #!/usr/local/node/bin/node
 
-console.log(__filename, __dirname);
+// console.log(__filename, __dirname);
+class PostReceive {
+
+    constructor (){
+        this.warehourse = null;
+    }
+
+    __getWarehourseName (){
+        let aPath = __filename.split("/");
+        let index = aPath.findIndex( v => v === "hooks" );
+        this.warehourse = aPath[index - 1];
+    }
+
+    exec (){
+        this.__getWarehourseName();
+        console.log(this.warehourse);
+    }
+
+}
+
+{
+    if ( !module.parents ){
+        const oPostReceive =  PostReceive();
+
+        oPostReceive.exec();
+    }
+}
+
 
 

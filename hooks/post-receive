@@ -2,10 +2,6 @@
 
 const { info } = require("../tools/colors");
 
-console.log(info);
-
-console.log("进来了......")
-
 class PostReceive {
 
     constructor (){
@@ -20,8 +16,7 @@ class PostReceive {
 
     exec (){
         this.__getWarehourseName();
-        console.log(this.warehourse);
-        info(this.warehourse);
+        info("[info] push仓库名: %s", this.warehourse);
     }
 
 }

@@ -22,7 +22,7 @@ class PostReceive {
 
 {
     if ( !module.parents ){
-        const oPostReceive =  PostReceive();
+        const oPostReceive = new PostReceive();
 
         oPostReceive.exec();
     }

@@ -4,6 +4,8 @@ const { info } = require("../tools/colors");
 
 console.log(info);
 
+console.log("进来了......")
+
 class PostReceive {
 
     constructor (){

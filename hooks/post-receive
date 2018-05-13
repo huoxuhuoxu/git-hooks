@@ -1,6 +1,7 @@
 #!/usr/local/node/bin/node
 
-// console.log(__filename, __dirname);
+const { info } = require("../tools/colors");
+
 class PostReceive {
 
     constructor (){
@@ -16,6 +17,7 @@ class PostReceive {
     exec (){
         this.__getWarehourseName();
         console.log(this.warehourse);
+        info(this.warehourse);
     }
 
 }

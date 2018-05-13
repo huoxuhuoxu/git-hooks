@@ -1,48 +1,7 @@
-#!/usr/local/node/bin/node
+#/bin/python
+import sys
 
-const { info } = require("../tools/colors");
-
-console.log(process.argv);
-
-process.stdin.setEncoding('utf8');
-
-process.stdin.on('readable', () => {
-  const chunk = process.stdin.read();
-  if (chunk !== null) {
-    process.stdout.write(`data: ${chunk}`);
-  }
-});
-
-process.stdin.on('end', () => {
-  process.stdout.write('end');
-});
-
-class PostReceive {
-
-    constructor (){
-        this.warehourse = null;
-    }
-
-    __getWarehourseName (){
-        let aPath = __filename.split("/");
-        let index = aPath.findIndex( v => v === "hooks" );
-        this.warehourse = aPath[index - 1];
-    }
-
-    exec (){
-        this.__getWarehourseName();
-        info("[info] push仓库名: %s", this.warehourse);
-    }
-
-}
-
-{
-    if ( !module.parents ){
-        const oPostReceive = new PostReceive();
-
-        oPostReceive.exec();
-    }
-}
+print sys.stdin.readline().strip().split(' ')
 
 
 

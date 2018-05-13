@@ -1,0 +1,5 @@
+#!/usr/local/node/bin/node
+
+console.log(__filename, __dirname);
+
+

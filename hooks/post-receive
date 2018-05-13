@@ -2,12 +2,11 @@
 
 const { info } = require("../tools/colors");
 
-console.log(process.argv);
-
 class PostReceive {
 
-    constructor (){
+    constructor (branch){
         this.warehourse = null;
+        this.branch = branch;
     }
 
     __getWarehourseName (){
@@ -18,38 +17,36 @@ class PostReceive {
 
     exec (){
         this.__getWarehourseName();
-        info("[info] push仓库名: %s", this.warehourse);
+        info("[info] push仓库名: %s, 分支: %s", this.warehourse, this.branch);
     }
 
 }
 
 {
     if ( !module.parents ){
-        // const oPostReceive = new PostReceive();
-
-        // oPostReceive.exec();
 
         (async () => {
 
+            // 获取push的分支
+            // 可以一次push多个分支, 这里只处理了第一个
             process.stdin.setEncoding('utf8');
-
-            let s = await new Promise(resolve => {
+            const branch = await new Promise(resolve => {
                 const chunks = [];
                 process.stdin.on('readable', () => {
                     const chunk = process.stdin.read();
                     if (chunk !== null) {
-                        process.stdout.write(`data: ${chunk}`);
                         chunks.push(chunk);
                     }
                 });
     
                 process.stdin.on('end', () => {
-                    process.stdout.write('end');
-                    resolve(chunks.join(""));
+                    const arr = chunks[2].split("/");
+                    resolve(arr[arr.length - 1]);
                 });
             });
 
-            console.log("[结果....]", s);
+            const oPostReceive = new PostReceive(branch);
+            oPostReceive.exec();
 
         })();
     }

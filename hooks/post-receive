@@ -79,7 +79,7 @@ class DeployProject {
 
     run (){
         console.log("项目...");
-        
+
     }
 
 }
@@ -93,6 +93,9 @@ class PostReceive {
 
     // 获取仓库名称
     __getWarehourseName (){
+
+        console.log(__filename, __dirname);
+
         let aPath = __filename.split("/");
         let index = aPath.findIndex( v => v === "hooks" );
         this.warehourse = aPath[index - 1];

@@ -106,9 +106,12 @@ class DeployProject {
                         branchs: this.branchs
                     }, "POST");
 
-                    console.log(resTxt);
-
-                    info("[info] origin: %s, path: %s", origin, task.api_post_receive);
+                    let res = JSON.parse(resTxt);
+                    if (!res.errcode){
+                        info("[info] success, origin: %s, path: %s", origin, task.api_post_receive);
+                        continue;
+                    }
+                    error("[warning] origin: %s", origin);
                 }
             }   
 

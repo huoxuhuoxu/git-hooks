@@ -44,7 +44,7 @@ class GitHookProduct {
 
         try {
 
-            info("[info] 检查 %s 是否存在 ...", deploy_pathname);
+            info("[info] 检查部署文件: %s 是否存在 ...", deploy_pathname);
             fs.accessSync(deploy_pathname);
             const f = fs.readFileSync(deploy_pathname);
             const task = yaml.safeLoad(f);

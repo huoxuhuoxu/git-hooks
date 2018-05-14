@@ -24,7 +24,7 @@ class GitHookProduct {
 
         // git-hooks 项目路径
         this.hooks_dirname = "/home/git/product/git-hooks";
-        this.git_hooks_env = "PATH=/usr/local/node/bin:/usr/bin:/usr/local/bin:/bin && bash -c";
+        this.git_hooks_env = "export HOME=/home/git && export PATH=/usr/local/node/bin:/usr/bin:/usr/local/bin:/bin && bash -c";
         this.deploy_pathname = "deploy.yaml";
 
     }
@@ -50,7 +50,7 @@ class GitHookProduct {
             if (task.run.length){
                 for (let cmd of task.run){
                     info("[info] 执行命令: %s", cmd);
-                    console.log(execSync(`export ${this.git_hooks_env} '${cmd}'`).toString());
+                    console.log(execSync(`${this.git_hooks_env} '${cmd}'`).toString());
                 }
             }
 

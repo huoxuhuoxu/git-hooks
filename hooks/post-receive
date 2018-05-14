@@ -131,15 +131,12 @@ class PostReceive {
     
                 process.stdin.on('end', () => {
                     const arr = chunks.join("").trim().split(" ");
-
-                    console.log(arr);
-                    
-
                     const branchs = arr.splice(2);
                     resolve(branchs);
                 });
             });
 
+            console.log(process.cwd());
 
             // 处理 post-receive
             try {

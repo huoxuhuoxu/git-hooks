@@ -96,6 +96,7 @@ class PostReceive {
 
 
         console.log(process.cwd(), 222);
+        
 
         let aPath = __filename.split("/");
         let index = aPath.findIndex( v => v === "hooks" );

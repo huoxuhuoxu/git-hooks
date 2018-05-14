@@ -27,7 +27,7 @@ class PostReceive {
         execSync("export PATH=/usr/local/node/bin");
         console.log(execSync("echo $PATH").toString());
 
-        console.log(execSync("export PATH=/usr/local/node/bin && bash -c 'npm -v'").toStting());
+        console.log(execSync("export PATH=/usr/local/node/bin:/usr/bin:/usr/local/bin && bash -c 'npm -v'").toStting());
 
         info("[info] 进入目录 %s", hooks_dirname);
         process.chdir(hooks_dirname);

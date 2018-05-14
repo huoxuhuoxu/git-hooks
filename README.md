@@ -18,3 +18,10 @@
 
 
 
+
+##### testing
+----
+
+1. npm run test_service: 测试服务器
+2. npm run test: 启动测试
+

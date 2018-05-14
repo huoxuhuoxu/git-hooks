@@ -25,11 +25,7 @@ class GitHookProduct {
         // git-hooks 项目路径
         this.hooks_dirname = "/home/git/product/git-hooks";
         this.git_hooks_env = " \
-            export LC_ALL='en_US.UTF-8' \
-            && export LANG='en_US.UTF-8' \
-            && export HOME=/home/git \
             && export PATH=/usr/local/node/bin:/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/bin \
-            && unset GIT_DIR \
             && bash -c";
         this.deploy_pathname = "deploy.yaml";
 
@@ -40,9 +36,6 @@ class GitHookProduct {
         info("[info] 进入目录 %s", this.hooks_dirname);
         process.chdir(this.hooks_dirname);
 
-        console.log(fs.readdirSync("."), ".....");
-
-        
         info("[info] 拉取更新");
         console.log(execSync(`${this.git_hooks_env} 'git pull'`).toString());
 

@@ -86,7 +86,7 @@ class DeployProject {
     
     }
 
-    run (){
+    async run (){
 
         try {
 

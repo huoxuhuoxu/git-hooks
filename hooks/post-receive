@@ -5,9 +5,61 @@ const fs = require("fs");
 const execSync = require("child_process").execSync;
 const yaml = require("js-yaml");
 
-// git-hooks 路径
-const hooks_dirname = "/home/git/product/git-hooks";
 
+/**
+ *  @readme
+ *      GitHookProduct: 自动化部署项目的自动化部署处理方案
+ *      PostReceive: hook: post-receive 
+ * 
+ *      git_hooks_env: 给git-hooks的环境变量    
+ * 
+ */
+
+const git_hooks_env = "PATH=/usr/local/node/bin:/usr/bin:/usr/local/bin && bash -c";
+
+class GitHookProduct {
+
+    constructor (){
+
+        // git-hooks 项目路径
+        this.hooks_dirname = "/home/git/product/git-hooks";
+
+    }
+
+    run (){
+
+        // console.log(execSync("export PATH=/usr/local/node/bin:/usr/bin:/usr/local/bin && bash -c 'npm -v'").toString());
+
+        info("[info] 进入目录 %s", this.hooks_dirname);
+        process.chdir(this.hooks_dirname);
+        
+        info("[info] 拉取更新");
+        execSync("sudo git pull");
+
+
+        try {
+
+            const deploy_pathname = "deploy.yaml";
+
+            info("[info] 检查 %s 是否存在", deploy_pathname);
+            fs.accessSync(deploy_pathname);
+            const f = fs.readFileSync(deploy_pathname);
+            const task = yaml.safeLoad(f);
+
+            if (task.run.length){
+                for (let cmd of task.run){
+                    console.log(execSync(`export ${git_hooks_env} '${cmd}'`).toString());
+                }
+            }
+
+            info("[info] end...");
+
+        } catch (err){
+            info("[info] %s 不存在, 结束...", deploy_pathname);
+        }
+    }
+
+}
 
 class PostReceive {
 
@@ -16,29 +68,19 @@ class PostReceive {
         this.branchs = branchs;
     }
 
+    // 获取仓库名称
     __getWarehourseName (){
         let aPath = __filename.split("/");
         let index = aPath.findIndex( v => v === "hooks" );
         this.warehourse = aPath[index - 1];
     }
 
-    __gitHooks (){
-
-        console.log(execSync("export PATH=/usr/local/node/bin:/usr/bin:/usr/local/bin && bash -c 'npm -v'").toString());
-
-        info("[info] 进入目录 %s", hooks_dirname);
-        process.chdir(hooks_dirname);
-        
-        info("[info] 拉取更新");
-        execSync("sudo git pull");
-
-    }
-
     run (){
+
         this.__getWarehourseName();
         info("[info] push仓库名: %s, 需要更新的分支: %s", this.warehourse, this.branchs.join(" , "));
 
-        if (this.warehourse === "git-hooks") return this.__gitHooks();
+        if (this.warehourse === "git-hooks") return new GitHookProduct().run();
 
     }
 
@@ -67,9 +109,10 @@ class PostReceive {
                 });
             });
 
+
+            // 处理 post-receive
             try {
-                const oPostReceive = new PostReceive(branchs);
-                oPostReceive.run();
+                new PostReceive(branchs).run();
             } catch (err){
                 error("[error] 发生了错误", err.toString());
             }

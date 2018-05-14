@@ -96,9 +96,7 @@ class PostReceive {
 
         let paths = process.cwd().split("/");
         this.warehourse = paths[paths.length - 1].split(".git")[0];
-        console.log(this.warehourse, 222);
 
-        
     }
 
     run (){

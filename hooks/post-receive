@@ -94,6 +94,9 @@ class PostReceive {
     // 获取仓库名称
     __getWarehourseName (){
 
+
+        console.log(process.cwd(), 222);
+
         let aPath = __filename.split("/");
         let index = aPath.findIndex( v => v === "hooks" );
         this.warehourse = aPath[index - 1];
@@ -135,9 +138,6 @@ class PostReceive {
                     resolve(branchs);
                 });
             });
-
-            console.log(process.cwd());
-            
 
             // 处理 post-receive
             try {

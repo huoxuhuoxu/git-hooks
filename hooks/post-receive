@@ -44,8 +44,7 @@ class GitHookProduct {
 
         
         info("[info] 拉取更新");
-        // execSync("git pull");
-        console.log(execSync(`${this.git_hooks_env} 'git pull'`));
+        console.log(execSync(`${this.git_hooks_env} 'git pull'`).toString());
 
         const deploy_pathname = this.deploy_pathname;
 

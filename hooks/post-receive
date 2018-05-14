@@ -101,12 +101,14 @@ class DeployProject {
 
             if (task.ips.length){
                 for (const origin of task.ips){
-                    requests(origin, task.api_post_receive, {
+                    let resTxt = await requests(origin, task.api_post_receive, {
                         warehourse: this.warehourse,
                         branchs: this.branchs
                     }, "POST");
 
-                    info("[info] origin: %s", origin);
+                    console.log(resTxt);
+
+                    info("[info] origin: %s, path: %s", origin, task.api_post_receive);
                 }
             }   
 

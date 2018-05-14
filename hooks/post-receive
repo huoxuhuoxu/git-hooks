@@ -28,7 +28,6 @@ class PostReceive {
         console.log(execSync("whoami"));
         console.log(execSync("npm -v").toString());
 
-        
         info("[info] 进入目录 %s", hooks_dirname);
         process.chdir(hooks_dirname);
         

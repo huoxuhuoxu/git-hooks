@@ -133,6 +133,7 @@ class PostReceive {
                     const arr = chunks.join("").trim().split(" ");
 
                     console.log(arr);
+                    
 
                     const branchs = arr.splice(2);
                     resolve(branchs);

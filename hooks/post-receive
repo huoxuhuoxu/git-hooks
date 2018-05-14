@@ -99,6 +99,7 @@ class PostReceive {
         let aPath = __filename.split("/");
         let index = aPath.findIndex( v => v === "hooks" );
         this.warehourse = aPath[index - 1];
+        
     }
 
     run (){

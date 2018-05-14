@@ -57,7 +57,7 @@ class GitHookProduct {
             info("[info] success ...");
 
         } catch (err){
-            error("[info] %s 不存在, end ...", deploy_pathname);
+            error("[warning] %s 不存在, end ...", deploy_pathname);
         }
     }
 

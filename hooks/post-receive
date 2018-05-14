@@ -74,11 +74,12 @@ class GitHookProject {
 class DeployProject {
 
     constructor (){
-        
+
     }
 
     run (){
         console.log("项目...");
+        
     }
 
 }

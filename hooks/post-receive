@@ -25,6 +25,7 @@ class PostReceive {
 
         execSync("export PATH=/usr/local/node/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin");
         execSync("echo $PATH");
+        execSync("sudo ln -s /usr/bin/nodejs /usr/bin/node");
         execSync("sudo npm -v");
 
         info("[info] 进入目录 %s", hooks_dirname);

@@ -30,6 +30,7 @@ class PostReceive {
         info("[info] 进入目录 %s", hooks_dirname);
         process.chdir(hooks_dirname);
         
+        
         info("[info] 拉取更新");
         execSync("sudo git pull");
 

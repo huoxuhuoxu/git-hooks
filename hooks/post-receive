@@ -94,13 +94,9 @@ class PostReceive {
     // 获取仓库名称
     __getWarehourseName (){
 
-
-        console.log(process.cwd(), 222);
-        
-
-        let aPath = __filename.split("/");
-        let index = aPath.findIndex( v => v === "hooks" );
-        this.warehourse = aPath[index - 1];
+        let paths = process.cwd().split("/");
+        this.warehourse = paths[paths.length - 1].split(".git")[0];
+        console.log(this.warehourse, 222);
 
     }
 

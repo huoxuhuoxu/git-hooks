@@ -24,8 +24,8 @@ class GitHookProduct {
 
         // git-hooks 项目路径
         this.hooks_dirname = "/home/git/product/git-hooks";
-        this.git_hooks_env = " \
-            && export PATH=/usr/local/node/bin:/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/bin \
+        this.git_hooks_env = "\
+            export PATH=/usr/local/node/bin:/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/bin \
             && bash -c";
         this.deploy_pathname = "deploy.yaml";
 

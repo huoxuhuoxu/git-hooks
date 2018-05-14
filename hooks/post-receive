@@ -8,14 +8,15 @@ const yaml = require("js-yaml");
 
 /**
  *  @readme
- *      GitHookProduct: 自动化部署项目的自动化部署处理方案
+ *      GitHookProduct: 自动化部署项目的自动化部署处理方案, 自身部署自身
+ *          git_hooks_env: 给git-hooks的环境变量    
+ *          hooks_dirname: 项目地址
+ *          deploy_pathname: 需要执行的其他配置
+ *  
+ * 
  *      PostReceive: hook: post-receive 
  * 
- *      git_hooks_env: 给git-hooks的环境变量    
- * 
  */
-
-const git_hooks_env = "PATH=/usr/local/node/bin:/usr/bin:/usr/local/bin && bash -c";
 
 class GitHookProduct {
 
@@ -23,6 +24,8 @@ class GitHookProduct {
 
         // git-hooks 项目路径
         this.hooks_dirname = "/home/git/product/git-hooks";
+        this.git_hooks_env = "PATH=/usr/local/node/bin:/usr/bin:/usr/local/bin && bash -c";
+        this.deploy_pathname = "deploy.yaml";
 
     }
 
@@ -34,10 +37,9 @@ class GitHookProduct {
         info("[info] 拉取更新");
         execSync("sudo git pull");
 
+        const deploy_pathname = this.deploy_pathname;
 
         try {
-
-            const deploy_pathname = "deploy.yaml";
 
             info("[info] 检查 %s 是否存在 ...", deploy_pathname);
             fs.accessSync(deploy_pathname);
@@ -48,7 +50,7 @@ class GitHookProduct {
             if (task.run.length){
                 for (let cmd of task.run){
                     info("[info] 执行命令: %s", cmd);
-                    console.log(execSync(`export ${git_hooks_env} '${cmd}'`).toString());
+                    console.log(execSync(`export ${this.git_hooks_env} '${cmd}'`).toString());
                 }
             }
 

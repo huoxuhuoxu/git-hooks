@@ -35,7 +35,7 @@ class GitHookProduct {
         process.chdir(this.hooks_dirname);
         
         info("[info] 拉取更新");
-        execSync("sudo git pull");
+        execSync("git pull");
 
         const deploy_pathname = this.deploy_pathname;
 

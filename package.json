@@ -18,5 +18,8 @@
   "license": "ISC",
   "devDependencies": {
     "express": "^4.16.3"
+  },
+  "dependencies": {
+    "js-yaml": "^3.11.0"
   }
 }

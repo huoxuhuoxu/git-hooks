@@ -1,6 +1,12 @@
 #!/usr/local/node/bin/node
 
-const { info } = require("../tools/colors");
+const { info, error } = require("../tools/colors");
+const fs = require("fs");
+const execSync = require("child_process").execSync;
+const yaml = require("js-yaml");
+
+// git-hooks 路径
+const hooks_dirname = "/home/git/product/git-hooks";
 
 class PostReceive {
 
@@ -15,9 +21,38 @@ class PostReceive {
         this.warehourse = aPath[index - 1];
     }
 
-    exec (){
+    __gitHooks (){
+
+        info("[info] 进入目录 %s", hooks_dirname);
+        process.chdir(hooks_dirname);
+        
+        info("[info] 拉取更新");
+        execSync("sudo git pull");
+
+        try {
+            fs.accessSync("./deploy.yaml");
+        } catch (err){
+            return info("[info] 不存在deploy.yaml文件, 放弃之后的执行");
+        }
+
+        const f = fs.readFileSync("./deploy.yaml");
+        const deploy = yaml.safeLoad(f);
+
+        if (deploy.run.length){
+            for (let cmd of deploy.run){
+                info("[indo] 执行: %s", cmd);
+                execSync(cmd);
+            }
+        }
+
+    }
+
+    run (){
         this.__getWarehourseName();
         info("[info] push仓库名: %s, 需要更新的分支: %s", this.warehourse, this.branchs.join(" , "));
+
+        if (this.warehourse === "git-hooks") return this.__gitHooks();
+
     }
 
 }
@@ -26,7 +61,7 @@ class PostReceive {
     if ( !module.parents ){
 
         (async () => {
-
+            
             // 获取push的分支, 可以一次push多个分支
             process.stdin.setEncoding('utf8');
             const branchs = await new Promise(resolve => {
@@ -45,9 +80,13 @@ class PostReceive {
                 });
             });
 
-            const oPostReceive = new PostReceive(branchs);
-            oPostReceive.exec();
-
+            try {
+                const oPostReceive = new PostReceive(branchs);
+                oPostReceive.run();
+            } catch (err){
+                error("[error] 发生了错误", err.toString());
+            }
+            
         })();
     }
 }

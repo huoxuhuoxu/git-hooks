@@ -27,7 +27,6 @@ class PostReceive {
         execSync("echo $PATH");
         execSync("sudo ln -s /usr/bin/nodejs /usr/bin/node");
         execSync("sudo npm -v");
-        
 
         info("[info] 进入目录 %s", hooks_dirname);
         process.chdir(hooks_dirname);

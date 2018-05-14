@@ -36,6 +36,9 @@ class GitHookProduct {
 
         info("[info] 进入目录 %s", this.hooks_dirname);
         process.chdir(this.hooks_dirname);
+
+        console.log(fs.readdirSync("."), ".....");
+
         
         info("[info] 拉取更新");
         execSync("git pull");

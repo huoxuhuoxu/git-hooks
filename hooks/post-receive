@@ -32,7 +32,6 @@ class PostReceive {
             }
         }).toString());
 
-
         info("[info] 进入目录 %s", hooks_dirname);
         process.chdir(hooks_dirname);
         

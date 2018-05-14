@@ -24,9 +24,6 @@ class PostReceive {
 
     __gitHooks (){
 
-        execSync("export PATH=/usr/local/node/bin");
-        console.log(execSync("echo $PATH").toString());
-
         console.log(execSync("export PATH=/usr/local/node/bin:/usr/bin:/usr/local/bin && bash -c 'npm -v'").toString());
 
         info("[info] 进入目录 %s", hooks_dirname);

@@ -23,36 +23,11 @@ class PostReceive {
 
     __gitHooks (){
 
-        // execSync("export PATH=/usr/local/node/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin");
-        // execSync("echo $PATH");
-        console.log(execSync("whoami").toString());
-        console.log(execSync("npm -v", {
-            env: {
-                "node": "/usr/local/node/bin/node"
-            }
-        }).toString());
-
         info("[info] 进入目录 %s", hooks_dirname);
         process.chdir(hooks_dirname);
         
         info("[info] 拉取更新");
         execSync("sudo git pull");
-
-        try {
-            fs.accessSync("./deploy.yaml");
-        } catch (err){
-            return info("[info] 不存在deploy.yaml文件, 放弃之后的执行");
-        }
-
-        const f = fs.readFileSync("./deploy.yaml");
-        const deploy = yaml.safeLoad(f);
-
-        if (deploy.run.length){
-            for (let cmd of deploy.run){
-                info("[indo] 执行: %s", cmd);
-                execSync(cmd);
-            }
-        }
 
     }
 

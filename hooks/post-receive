@@ -2,15 +2,16 @@
 
 const { info, error } = require("../tools/colors");
 const fs = require("fs");
+const path = require("path");
 const execSync = require("child_process").execSync;
 const yaml = require("js-yaml");
+const requests = require("../tools/requests");
 
 
 /**
  *  @readme
  *      GitHookProduct: 自动化部署项目的自动化部署处理方案, 自身部署自身
  *          git_hooks_env: 给git-hooks的环境变量    
- *          hooks_dirname: 项目地址
  *          deploy_pathname: 需要执行的其他配置
  *          branchs: 需要部署的分支, 暂时不处理, 默认全部是master
  *  
@@ -19,12 +20,14 @@ const yaml = require("js-yaml");
  * 
  */
 
+
+// 自动化部署系统 - 项目路径
+const hooks_dirname =  "/home/git/product/git-hooks";
+
 class GitHookProject {
 
     constructor (branchs){
 
-        this.hooks_dirname = "/home/git/product/git-hooks";
-        
         this.git_hooks_env = "\
             export PATH=/usr/local/node/bin:/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/bin \
             && unset GIT_DIR \
@@ -38,8 +41,8 @@ class GitHookProject {
 
     run (){
 
-        info("[info] 进入目录 %s", this.hooks_dirname);
-        process.chdir(this.hooks_dirname);
+        info("[info] 进入目录 %s", hooks_dirname);
+        process.chdir(hooks_dirname);
 
         info("[info] 拉取更新");
         console.log(execSync(`${this.git_hooks_env} 'git pull'`).toString());
@@ -73,13 +76,44 @@ class GitHookProject {
 
 class DeployProject {
 
-    constructor (){
+    constructor (warehourse, branchs){
 
+        this.warehourse = warehourse;
+        this.branchs = branchs;
+
+        // 分布式 - 配置文件
+        this.config = "config.yaml";
+    
     }
 
     run (){
-        console.log("项目...");
 
+        try {
+
+            const config_pathanme = path.resolve(hooks_dirname, this.config)
+            
+            info("[info] 检查配置文件 %s 是否存在", config_pathanme);
+            fs.accessSync(config_pathanme);
+
+            const f = fs.readFileSync(config_pathanme);
+            const task = yaml.safeLoad(f);
+
+            if (task.ips.length){
+                for (const origin of task.ips){
+                    requests.post(origin, task.api_post_receive, {
+                        warehourse: this.warehourse,
+                        branchs: this.branchs
+                    }, "POST");
+
+                    info("[info] origin: %s", origin);
+                }
+            }   
+
+            info("[info] success ...");
+
+        } catch (err){
+            error("[warning] 根据配置文件通知各IP更新代码失败, end ...", err.toString());
+        }
     }
 
 }
@@ -106,7 +140,7 @@ class PostReceive {
 
         if (this.warehourse === "git-hooks") return new GitHookProject(this.branchs).run();
 
-        new DeployProject().run();
+        new DeployProject(this.warehourse, this.branchs).run();
 
     }
 

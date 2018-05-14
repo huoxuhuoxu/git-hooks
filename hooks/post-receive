@@ -28,8 +28,6 @@ class GitHookProduct {
 
     run (){
 
-        // console.log(execSync("export PATH=/usr/local/node/bin:/usr/bin:/usr/local/bin && bash -c 'npm -v'").toString());
-
         info("[info] 进入目录 %s", this.hooks_dirname);
         process.chdir(this.hooks_dirname);
         
@@ -41,13 +39,15 @@ class GitHookProduct {
 
             const deploy_pathname = "deploy.yaml";
 
-            info("[info] 检查 %s 是否存在", deploy_pathname);
+            info("[info] 检查 %s 是否存在 ...", deploy_pathname);
             fs.accessSync(deploy_pathname);
             const f = fs.readFileSync(deploy_pathname);
             const task = yaml.safeLoad(f);
+            info("[info] %s 存在 ...", deploy_pathname);
 
             if (task.run.length){
                 for (let cmd of task.run){
+                    info("[info] 执行命令: %s", cmd);
                     console.log(execSync(`export ${git_hooks_env} '${cmd}'`).toString());
                 }
             }

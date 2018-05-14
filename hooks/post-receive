@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/local/node/bin/node
 
 const { info, error } = require("../tools/colors");
 const fs = require("fs");

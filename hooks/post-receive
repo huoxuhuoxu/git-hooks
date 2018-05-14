@@ -52,7 +52,7 @@ class GitHookProduct {
                 }
             }
 
-            info("[info] end...");
+            info("[info] success ...");
 
         } catch (err){
             info("[info] %s 不存在, 结束...", deploy_pathname);

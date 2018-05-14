@@ -94,13 +94,14 @@ class DeployProject {
             
             info("[info] 检查配置文件 %s 是否存在", config_pathanme);
             fs.accessSync(config_pathanme);
+            info("[info] 配置文件 %s 存在", config_pathanme);
 
             const f = fs.readFileSync(config_pathanme);
             const task = yaml.safeLoad(f);
 
             if (task.ips.length){
                 for (const origin of task.ips){
-                    requests.post(origin, task.api_post_receive, {
+                    requests(origin, task.api_post_receive, {
                         warehourse: this.warehourse,
                         branchs: this.branchs
                     }, "POST");

@@ -101,6 +101,9 @@ class DeployProject {
 
             if (task.ips.length){
                 for (const origin of task.ips){
+
+                    info("[info] 开始通知 origin: %s", origin);
+
                     let resTxt = await requests(origin, task.api_post_receive, {
                         warehourse: this.warehourse,
                         branchs: this.branchs
@@ -118,7 +121,7 @@ class DeployProject {
             info("[info] success ...");
 
         } catch (err){
-            error("[warning] 根据配置文件通知各IP更新代码失败, end ...", err.toString());
+            error("[warning] 根据配置文件通知IP更新代码失败, end ...", err.toString());
         }
     }
 

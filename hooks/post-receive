@@ -134,10 +134,15 @@ class DeployProject {
 
     }
 
-    __heartbeat_mechanism (task){
+    async __heartbeat_mechanism (task){
 
         const bad = [];
         let counts = 0;
+
+        await new Promise(resolve => {
+            info("[info] 添加延迟，5s");
+            setTimeout(resolve, 5000);
+        });
         
         for (const origin of task.ips){
             counts++;
@@ -155,7 +160,7 @@ class DeployProject {
                 }
             });
         }
-        
+
     }
 
     async run (){

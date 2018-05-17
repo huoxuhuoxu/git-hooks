@@ -114,7 +114,7 @@ class DeployProject {
                         info("[info] success, origin: %s, path: %s", origin, task.api_post_receive);
                         continue;
                     }
-                    error("[warning] origin: %s", origin);
+                    error("[warning] origin: %s, message: %s", origin, res.msg);
                 }
             }   
 

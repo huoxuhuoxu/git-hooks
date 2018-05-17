@@ -6,7 +6,7 @@ const execSync = require("child_process").execSync;
 const yaml = require("js-yaml");
 const requests = require("../libs/requests");
 const { info, error } = require("../libs/colors");
-const { promiseAll } = require("../libs/diy_promise");
+const { promise_all } = require("../libs/diy_promise");
 
 
 /**
@@ -18,7 +18,8 @@ const { promiseAll } = require("../libs/diy_promise");
  *  
  *      DeployProject: 自动化部署其余项目
  *          __notice_hosts: 通知其他主机重新部署项目
- *          __notice_listener_service: 通知其他主机重新部署监控部署的服务进程
+ *          __notice_listener_service: 通知其他主机重新部署 监控自动化部署 的服务进程
+ *          __heartbeat_mechanism: 心跳机制，检测 负责自动化部署的监控进程 是否启动
  * 
  *      PostReceive: hook: post-receive 
  * 
@@ -113,27 +114,28 @@ class DeployProject {
 
     async __notice_listener_service (task){
 
-        let counts = 0;
+        const items = [];
 
         for (const origin of task.ips){
 
             info("[info] 开始通知 origin: %s 重新部署 分布式部署系统的监控进程", origin);
-            counts++;
 
-            requests(origin, task.api_post_receive, {
+            const item = requests(origin, task.api_post_receive, {
                 warehourse: this.warehourse,
                 branchs: this.branchs
-            }, "POST").catch(err => {
-                counts--;
-                if (!counts){
-                    info("[info] 开始检测各监控进程是否都正常启动...");
-                    this.__heartbeat_mechanism(task);
-                }
-            });
+            }, "POST");
+
+            items.push(item);
 
         }
 
+        promise_all(items, () => {
+            info("[info] 开始检测各监控进程是否都正常启动...");
+            this.__heartbeat_mechanism(task);
+        });
+
     }
+
 
     async __heartbeat_mechanism (task){
 
@@ -142,13 +144,13 @@ class DeployProject {
             setTimeout(resolve, 5000);
         });
         
-        const promise_array = [];
+        const items = [];
         for (const origin of task.ips){
-            const promise_item = requests(origin, task.api_is_running);
-            promise_array.push(promise_item);
+            const item = requests(origin, task.api_is_running);
+            items.push(item);
         }
 
-        promiseAll(promise_array, (bad) => {
+        promise_all(items, bad => {
 
             if (bad.length > 0){
                 const bad_ips = task.ips.find((v, i) => {

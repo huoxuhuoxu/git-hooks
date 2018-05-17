@@ -16,7 +16,7 @@ module.exports = {
     },
     "ecmaFeatures": {},
     "rules": {
-        "no-console": "warn",
+        "no-console": "off",
         "eqeqeq": "error",
         "no-alert": "warn",
         "no-eval": "error",

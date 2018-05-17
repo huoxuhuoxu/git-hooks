@@ -16,7 +16,7 @@ const get = async (protocol, url, callback) => {
 const post = async (protocol, options, data, callback) => {
     return new Promise((resolve, reject) => {
         const req = protocol.request(options, callback.bind(null, resolve, reject));
-        req.on("error", (e) => { reject(e) });
+        req.on("error", (e) => { reject(e); });
         req.write(data);
         req.end();
     }); 
@@ -31,7 +31,7 @@ const getOptions = (origin, path, body, method) => {
         port = pathArr[1];
     }
 
-    const postData = JSON.stringify(body)
+    const postData = JSON.stringify(body);
     const options = {
         hostname,
         port,
@@ -69,7 +69,7 @@ const callback = async (resolve, reject, res) => {
         if (chunk !== null){
             chunks.push(chunk);
         }
-    })
+    });
     res.on("end", () => {
         resolve(chunks.join(""));
     });

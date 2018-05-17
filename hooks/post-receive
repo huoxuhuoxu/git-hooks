@@ -174,7 +174,7 @@ class DeployProject {
                 await go();
             }
 
-            info("[info] success ...");
+            info("[info] all success ...");
 
         } catch (err){
             error("[warning] 根据配置文件通知IP更新代码失败, end ...", err.toString());

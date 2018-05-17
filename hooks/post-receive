@@ -7,11 +7,12 @@ const yaml = require("js-yaml");
 const requests = require("../libs/requests");
 const { info, error } = require("../libs/colors");
 const { promise_all } = require("../libs/diy_promise");
+const { is_exists } = require("../libs/files");
 
 
 /**
  *  @readme
- *      GitHookProduct: 自动化部署项目的自动化部署处理方案, 自身部署自身
+ *      GitHookProduct: 自动化部署项目(hooks部分) 的 自动化部署处理方案, 自身部署自身
  *          git_hooks_env: 给git-hooks的环境变量    
  *          deploy_pathname: 需要执行的其他配置
  *          branchs: 需要部署的分支, 暂时不处理, 默认全部是master
@@ -53,14 +54,14 @@ class GitHookProject {
         console.log(execSync(`${this.git_hooks_env} 'git pull'`).toString());
 
         const deploy_pathname = this.deploy_pathname;
+        info("[info] 检查部署文件: %s 是否存在 ...", deploy_pathname);
 
-        try {
+        if (is_exists(deploy_pathname)){
 
-            info("[info] 检查部署文件: %s 是否存在 ...", deploy_pathname);
-            fs.accessSync(deploy_pathname);
+            info("[info] %s 存在 ...", deploy_pathname);
+            
             const f = fs.readFileSync(deploy_pathname);
             const task = yaml.safeLoad(f);
-            info("[info] %s 存在 ...", deploy_pathname);
 
             if (task.run.length){
                 for (let cmd of task.run){
@@ -69,11 +70,11 @@ class GitHookProject {
                 }
             }
 
-            info("[info] success ...");
+            return info("[info] success ...");
 
-        } catch (err){
-            error("[warning] %s 不存在, end ...", deploy_pathname);
         }
+
+        error("[warning] %s 不存在, end ...", deploy_pathname);
     }
 
 }
@@ -167,12 +168,12 @@ class DeployProject {
 
     async run (){
 
-        try {
+        const config_pathanme = path.resolve(hooks_dirname, this.config)
+        
+        info("[info] 检查配置文件 %s 是否存在", config_pathanme);
 
-            const config_pathanme = path.resolve(hooks_dirname, this.config)
-            
-            info("[info] 检查配置文件 %s 是否存在", config_pathanme);
-            fs.accessSync(config_pathanme);
+        if (is_exists(config_pathanme)){
+
             info("[info] 配置文件 %s 存在", config_pathanme);
 
             const f = fs.readFileSync(config_pathanme);
@@ -185,11 +186,11 @@ class DeployProject {
                 await go();
             }
 
-            info("[info] all success ...");
+            return info("[info] all success ...");
 
-        } catch (err){
-            error("[warning] 根据配置文件通知IP更新代码失败, end ...", err.toString());
         }
+        
+        error("[warning] 根据配置文件通知各IP更新代码失败, end ...", err.toString());
     }
 
 }

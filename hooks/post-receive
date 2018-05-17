@@ -135,8 +135,10 @@ class DeployProject {
     }
 
     __heartbeat_mechanism (task){
+
         const bad = [];
         let counts = 0;
+        
         for (const origin of task.ips){
             counts++;
             requests(origin, task.api_post_receive, {
@@ -144,6 +146,7 @@ class DeployProject {
                 branchs: this.branchs
             }).catch(err => {
                 bad.push(origin);
+                counts--;
                 if (!counts){
                     const s = bad.length > 0 
                         ? `[warning] 共 ${task.ips.length} 个，存在 ${bad.length} 个监控进程启动失败, 详情:\r\n${bad.join(" , ")}`
@@ -152,6 +155,7 @@ class DeployProject {
                 }
             });
         }
+        
     }
 
     async run (){

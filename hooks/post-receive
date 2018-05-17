@@ -146,7 +146,12 @@ class DeployProject {
         
         for (const origin of task.ips){
             counts++;
-            requests(origin, task.api_is_running).catch(err => {
+            requests(origin, task.api_is_running).then(data => {
+                console.log(data);
+            }).catch(err => {
+
+                console.log(err);
+
                 bad.push(origin);
                 counts--;
                 if (!counts){

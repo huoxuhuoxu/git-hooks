@@ -146,10 +146,7 @@ class DeployProject {
         
         for (const origin of task.ips){
             counts++;
-            requests(origin, task.api_post_receive, {
-                warehourse: this.warehourse,
-                branchs: this.branchs
-            }).catch(err => {
+            requests(origin, task.api_is_running).catch(err => {
                 bad.push(origin);
                 counts--;
                 if (!counts){

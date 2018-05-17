@@ -15,6 +15,9 @@ const requests = require("../tools/requests");
  *          deploy_pathname: 需要执行的其他配置
  *          branchs: 需要部署的分支, 暂时不处理, 默认全部是master
  *  
+ *      DeployProject: 自动化部署其余项目
+ *          __notice_hosts: 通知其他主机重新部署项目
+ *          __notice_listener_service: 通知其他主机重新部署监控部署的服务进程
  * 
  *      PostReceive: hook: post-receive 
  * 
@@ -86,6 +89,71 @@ class DeployProject {
     
     }
 
+    async __notice_hosts (task){
+
+        for (const origin of task.ips){
+
+            info("[info] 开始通知 origin: %s", origin);
+
+            let resTxt = await requests(origin, task.api_post_receive, {
+                warehourse: this.warehourse,
+                branchs: this.branchs
+            }, "POST");
+
+            let res = JSON.parse(resTxt);
+            if (!res.errcode){
+                info("[info] success, origin: %s, path: %s", origin, task.api_post_receive);
+                continue;
+            }
+            error("[warning] origin: %s, message: %s", origin, res.msg);
+        }
+
+    }
+
+    async __notice_listener_service (task){
+
+        let counts = 0;
+
+        for (const origin of task.ips){
+
+            info("[info] 开始通知 origin: %s 重新部署 分布式部署系统的监控进程", origin);
+            counts++;
+
+            requests(origin, task.api_post_receive, {
+                warehourse: this.warehourse,
+                branchs: this.branchs
+            }, "POST").catch(err => {
+                counts--;
+                if (!counts){
+                    info("[info] 开始检测各监控进程是否都正常启动...");
+                    this.__heartbeat_mechanism(task);
+                }
+            });
+
+        }
+
+    }
+
+    __heartbeat_mechanism (task){
+        const bad = [];
+        let counts = 0;
+        for (const origin of task.ips){
+            counts++;
+            requests(origin, task.api_post_receive, {
+                warehourse: this.warehourse,
+                branchs: this.branchs
+            }).catch(err => {
+                bad.push(origin);
+                if (!counts){
+                    const s = bad.length > 0 
+                        ? `[warning] 共 ${task.ips.length} 个，存在 ${bad.length} 个监控进程启动失败, 详情:\r\n${bad.join(" , ")}`
+                        : `[warning] 共 ${task.ips.length} 个， 监控进程，全部重新部署完成`;
+                    error(s);
+                }
+            });
+        }
+    }
+
     async run (){
 
         try {
@@ -100,23 +168,11 @@ class DeployProject {
             const task = yaml.safeLoad(f);
 
             if (task.ips.length){
-                for (const origin of task.ips){
-
-                    info("[info] 开始通知 origin: %s", origin);
-
-                    let resTxt = await requests(origin, task.api_post_receive, {
-                        warehourse: this.warehourse,
-                        branchs: this.branchs
-                    }, "POST");
-
-                    let res = JSON.parse(resTxt);
-                    if (!res.errcode){
-                        info("[info] success, origin: %s, path: %s", origin, task.api_post_receive);
-                        continue;
-                    }
-                    error("[warning] origin: %s, message: %s", origin, res.msg);
-                }
-            }   
+                const go = this.warehourse !== "hooks-service" 
+                    ? this.__notice_hosts.bind(this, task) 
+                    : this.__notice_listener_service.bind(this, task);
+                await go();
+            }
 
             info("[info] success ...");
 

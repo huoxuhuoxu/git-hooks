@@ -160,7 +160,7 @@ class DeployProject {
                 return error("[warning] 共 %s 个，存在 %d 个监控进程启动失败, 详情:\r\n%s", task.ips.length, bad_ips.length, bad_ips.join(" , "));
             } 
 
-            info("[info] 共 %s 个， 监控进程，全部重新部署完成", task.ips.length);
+            info("[info] 共 %s 个， 监控进程，全部正常运作中 ...", task.ips.length);
             
         });
 

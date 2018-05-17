@@ -1,5 +1,5 @@
-// test tools-requests
-const requests = require("../tools/requests");
+// test libs-requests
+const requests = require("../libs/requests");
 
 {
     (async () => {

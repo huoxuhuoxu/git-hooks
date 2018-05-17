@@ -1,11 +1,12 @@
 #!/usr/local/node/bin/node
 
-const { info, error } = require("../tools/colors");
 const fs = require("fs");
 const path = require("path");
 const execSync = require("child_process").execSync;
 const yaml = require("js-yaml");
-const requests = require("../tools/requests");
+const requests = require("../libs/requests");
+const { info, error } = require("../libs/colors");
+const { promiseAll } = require("../libs/diy_promise");
 
 
 /**
@@ -136,42 +137,29 @@ class DeployProject {
 
     async __heartbeat_mechanism (task){
 
-        const bad = [];
-        let counts = 0;
-
         await new Promise(resolve => {
             info("[info] 添加延迟，5s");
             setTimeout(resolve, 5000);
         });
         
+        const promise_array = [];
         for (const origin of task.ips){
-            counts++;
-            requests(origin, task.api_is_running).then(data => {
-
-                console.log(data);
-                counts--;
-
-                if (!counts){
-                    const s = bad.length > 0 
-                        ? `[warning] 共 ${task.ips.length} 个，存在 ${bad.length} 个监控进程启动失败, 详情:\r\n${bad.join(" , ")}`
-                        : `[warning] 共 ${task.ips.length} 个， 监控进程，全部重新部署完成`;
-                    error(s);
-                }
-
-            }).catch(err => {
-
-                console.log(err);
-                counts--;
-                bad.push(origin);
-                
-                if (!counts){
-                    const s = bad.length > 0 
-                        ? `[warning] 共 ${task.ips.length} 个，存在 ${bad.length} 个监控进程启动失败, 详情:\r\n${bad.join(" , ")}`
-                        : `[warning] 共 ${task.ips.length} 个， 监控进程，全部重新部署完成`;
-                    error(s);
-                }
-            });
+            const promise_item = requests(origin, task.api_is_running);
+            promise_array.push(promise_item);
         }
+
+        promiseAll(promise_array, (bad) => {
+
+            if (bad.length > 0){
+                const bad_ips = task.ips.find((v, i) => {
+                    return ~bad.indexOf(i);
+                });
+                return error("[warning] 共 %s 个，存在 %d 个监控进程启动失败, 详情:\r\n%s", task.ips.length, bad_ips.length, bad_ips.join(" , "));
+            } 
+
+            info("[info] 共 %s 个， 监控进程，全部重新部署完成", task.ips.length);
+            
+        });
 
     }
 

@@ -168,7 +168,7 @@ class DeployProject {
 
     async run (){
 
-        const config_pathanme = path.resolve(hooks_dirname, this.config)
+        const config_pathanme = path.resolve(hooks_dirname, this.config);
         
         info("[info] 检查配置文件 %s 是否存在", config_pathanme);
 
@@ -190,7 +190,7 @@ class DeployProject {
 
         }
         
-        error("[warning] 根据配置文件通知各IP更新代码失败, end ...", err.toString());
+        error("[warning] 根据配置文件通知IPs，更新项目代码失败，不存在配置文件 %s, end ...", config_pathanme);
     }
 
 }

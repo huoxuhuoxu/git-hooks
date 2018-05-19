@@ -29,7 +29,6 @@ const lint = {
 
 const ignore = [];
 
-
 const main = () => {
 
     console.log(".......");

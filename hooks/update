@@ -48,8 +48,6 @@ const main = () => {
 
 };
 
-console.log("ni 好啊啊");
-
 
 {
     if ( !module.parents ){

@@ -101,11 +101,12 @@ const main = () => {
     if ( !module.parents ){
 
         (() => {
+            
             try {
-                return ~~main();
+                exit(~~main());
             } catch(err){
                 error("[error] 发生了错误", err.toString());
-                return 1;
+                exit(1);
             }
 
         })();

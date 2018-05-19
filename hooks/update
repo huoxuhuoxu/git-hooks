@@ -40,8 +40,14 @@ const main = () => {
         return error("[warning] 项目 %s 不需要进行语法检测", warehourse);
     }
 
-    console.log(222, execSync(`${git_gooks_env} 'git diff --name-only ${old_commit} ${new_commit}'`).toString());
-
+    const s_change_file = execSync(`${git_gooks_env} 'git diff --name-only ${old_commit} ${new_commit}'`).toString();
+    const files = change_files.split("\n");
+    for (let i=0, l=files.length - 1; i<l; i++ ){
+        execSync(`
+            ${git_gooks_env}
+            'git show ${new_commit}:${files[i]} | eslint --stdin --no-inline-config --fix-dry-run -c /home/git/product/git-hooks/.eslintrc.js'
+        `).toString();
+    }
 };
 
 {

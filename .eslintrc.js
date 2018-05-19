@@ -14,7 +14,6 @@ module.exports = {
         "es6": true,
         "mocha": true
     },
-    "ecmaFeatures": {},
     "rules": {
         "no-console": "off",
         "eqeqeq": "error",

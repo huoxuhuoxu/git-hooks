@@ -103,10 +103,10 @@ const main = () => {
         (() => {
             
             try {
-                exit(~~main());
+                process.exit(~~main());
             } catch(err){
                 error("[error] 发生了错误", err.toString());
-                exit(1);
+                process.exit(1);
             }
 
         })();

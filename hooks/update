@@ -50,6 +50,8 @@ const main = () => {
 
     const config_pathanme = path.resolve(__dirname, "../config.yaml"); 
 
+    console.log(process.argv);
+
     const [ , , branch, old_commit, new_commit ] = process.argv;
     const paths = process.cwd().split("/");
     const warehourse = paths[paths.length - 1].split(".git")[0];

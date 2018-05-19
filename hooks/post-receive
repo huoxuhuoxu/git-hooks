@@ -230,7 +230,7 @@ class PostReceive {
 
         (async () => {
             
-            // 从stdin传入参数
+            // 从stdin传入参数: old_commit_id, new_commit_id, branchs
             // 获取push的分支, 可以一次push多个分支
             process.stdin.setEncoding('utf8');
             const branchs = await new Promise(resolve => {
@@ -244,8 +244,6 @@ class PostReceive {
     
                 process.stdin.on('end', () => {
                     const arr = chunks.join("").trim().split(" ");
-                    console.log("2222222", arr);
-                    
                     const branchs = arr.splice(2);
                     resolve(branchs);
                 });

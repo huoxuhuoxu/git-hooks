@@ -24,11 +24,11 @@ const { info, warn, error } = require("../libs/colors");
 const lint = {
     ".js": {
         name: "eslint",
-        getSentence: (commit_id, file_path, show_filename = "") => {
+        getSentence: (commit_id, file_path) => {
             return `'git show ${commit_id}:${file_path} | \
                 eslint \
                 --stdin \
-                --stdin-filename=${show_filename} \
+                --stdin-filename=${file_path} \
                 --no-inline-config \
                 --ignore-path ${process.env.eslint_ignore_path} \
                 -c ${process.env.eslint_config} | cat' \

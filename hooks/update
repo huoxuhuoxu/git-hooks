@@ -19,11 +19,11 @@ const git_gooks_env = "\
     && unset GIT_DIR \
     && bash -c";
 
-const lint = {
-    ".js": {
-        name: "eslint"
-    }
-}
+// const lint = {
+//     ".js": {
+//         name: "eslint"
+//     }
+// }
 
 const ignore = [];
 

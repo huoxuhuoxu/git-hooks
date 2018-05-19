@@ -28,6 +28,8 @@ const lint = {
 const ignore = [];
 
 const main = () => {
+
+    console.log(process.argv);
     
     const [ , , branch, old_commit, new_commit ] = process.argv;
 

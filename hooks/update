@@ -33,7 +33,7 @@ const main = () => {
 
     const paths = process.cwd().split("/");
     const warehourse = paths[paths.length - 1].split(".git")[0];
-    const username = paths[paths.length - 2];
+    const username = paths[paths.length - 3];
 
     info("[info] 需要对用户 %s 的项目 %s, 分支: %s 进行检查...", username, warehourse, branch);
     
@@ -41,7 +41,7 @@ const main = () => {
         return error("[warning] 用户 %s 下的项目 %s 不需要进行语法检测", username, warehourse);
     }
 
-    info(execSync(`${git_gooks_env} 'git diff --name-only --diff-filter=d ${old_commit} ${new_commit}'`).toString());
+    console.log(222, execSync(`${git_gooks_env} 'git diff --name-only --diff-filter=d ${old_commit} ${new_commit}'`).toString());
 
 
 };

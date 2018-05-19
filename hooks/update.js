@@ -27,6 +27,7 @@ const lint = {
     }
 }
 
+
 const ignore = [];
 
 const main = () => {

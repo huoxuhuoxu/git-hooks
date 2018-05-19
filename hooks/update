@@ -1,7 +1,5 @@
 #!/usr/local/node/bin/node
 
-require("../libs/init");
-
 const execSync = require("child_process").execSync;
 const fs = require("fs");
 const path = require("path");
@@ -14,8 +12,11 @@ const { info, warn, error } = require("../libs/colors");
  *  @describe
  *      push代码时进行语法检测
  * 
- *      lint: 需要检查的文件类型
+ *      eslint_config_path: eslint       配置检测文件的路径
+ *      eslint_ignore_path: eslintignore 配置过滤文件的路径
+ * 
  *      ignore: 过滤，不需要进行检查的项目
+ *      lint:   需要检查的文件类型
  *      
  * 
  *  @function main
@@ -23,6 +24,10 @@ const { info, warn, error } = require("../libs/colors");
  * 
  */
 
+const eslint_config_path = path.resolve(__dirname, "../.eslintrc.js");
+const eslint_ignore_path = path.resolve(__dirname, "../.eslintignore");
+
+const ignore = [];
 
 const lint = {
     ".js": {
@@ -33,18 +38,17 @@ const lint = {
                 --stdin \
                 --stdin-filename=${file_path} \
                 --no-inline-config \
-                --ignore-path ${process.env.eslint_ignore_path} \
-                -c ${process.env.eslint_config} | cat' \
+                --ignore-path ${eslint_ignore_path} \
+                -c ${eslint_config_path} | cat' \
             `
         }
     }
 }
 
-const ignore = [];
 
 const main = () => {
 
-    const config_pathanme = path.resolve(process.env.hooks_dirname, process.env.config_filename); 
+    const config_pathanme = path.resolve(__dirname, "../config.yaml"); 
 
     const [ , , branch, old_commit, new_commit ] = process.argv;
     const paths = process.cwd().split("/");
@@ -66,8 +70,10 @@ const main = () => {
         const files = s_change_file.split("\n");
 
         for (let i=0, l=files.length - 1; i<l; i++ ){
+            
             const file_path = files[i];
             const extname = path.extname(file_path);
+
             if (extname in lint){
                 info("[info] 检查文件 %s", file_path);
                 const resul = execSync(`\
@@ -79,21 +85,22 @@ const main = () => {
                     error(resul);
                     b_error = true;
                 } else {
-                    info("[info] pass");
+                    info("[info] 文件: %s pass", file_path);
                 }
                 
                 continue;
             }
+
             warn("[warning] 过滤文件: %s", file_path);
         }
 
         if (b_error) error("[resul] 语法检测 不通过, push失败 ... \r\n");
-        else info("[resul] 语法检查通过 ... \r\n")
+        else info("[resul] 语法检查通过 ... \r\n");
+
         return b_error;
     }
 
-    error("[error] 配置文件不存在或无读取权限, 检查项目 %s 失败", warehourse);
-    
+    throw new Error(`配置文件不存在或无读取权限, 检查项目 ${warehourse} 失败`);
 };
 
 
@@ -105,7 +112,7 @@ const main = () => {
             try {
                 process.exit(~~main());
             } catch(err){
-                error("[error] 发生了错误", err.toString());
+                error("[error] 发生了错误", err.message || err.toString());
                 process.exit(1);
             }
 

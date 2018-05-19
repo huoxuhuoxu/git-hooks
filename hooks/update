@@ -31,7 +31,7 @@ const ignore = [];
 
 const main = () => {
 
-    require("dotenv").config();
+    require("dotenv").config({path: "/home/git/product/git-hooks/.env"});
     
 
     console.log(".......");

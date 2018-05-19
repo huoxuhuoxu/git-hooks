@@ -19,11 +19,11 @@ const git_gooks_env = "\
     && unset GIT_DIR \
     && bash -c";
 
-// const lint = {
-//     ".js": {
-//         name: "eslint"
-//     }
-// }
+const lint = {
+    ".js": {
+        name: "eslint"
+    }
+}
 
 const ignore = [];
 
@@ -43,13 +43,17 @@ const main = () => {
     const s_change_file = execSync(`${git_gooks_env} 'git diff --name-only ${old_commit} ${new_commit}'`).toString();
     const files = s_change_file.split("\n");
     for (let i=0, l=files.length - 1; i<l; i++ ){
-        console.log(execSync(`\
-            ${git_gooks_env} \
-            'git show ${new_commit}:${files[i]} | \
-            eslint --stdin --no-inline-config --fix-dry-run \
-            --ignore-path /home/git/product/git-hooks/.eslintignore \
-            -c /home/git/product/git-hooks/.eslintrc.js'\
-        `).toString());
+        try {
+            console.log(execSync(`\
+                ${git_gooks_env} \
+                'git show ${new_commit}:${files[i]} | \
+                eslint --stdin --no-inline-config --fix-dry-run \
+                --ignore-path /home/git/product/git-hooks/.eslintignore \
+                -c /home/git/product/git-hooks/.eslintrc.js'\
+            `).toString());
+        }catch(err){
+            console.log("..", err.message || err.toString());
+        }        
     }
 };
 

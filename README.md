@@ -6,6 +6,11 @@
     nodeJs Version 8.0.0
 
 
+##### Flow chart
+----
+![流程图](https://i0.hdslb.com/bfs/album/25fef1baa29f205b037ee4b8be9e4d2647db7c84.png "Node.js Git分布式自动化部署系统 流程图")
+
+
 ##### Global env
 ----
     eslint Version 3.0.0

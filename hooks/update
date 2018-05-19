@@ -31,6 +31,8 @@ const ignore = [];
 
 const main = () => {
 
+    console.log(".......");
+
     const config_pathanme = path.resolve(process.env.hooks_dirname, process.env.config_filename); 
 
     console.log("222", config_pathanme);

@@ -44,7 +44,7 @@ const main = () => {
     const files = s_change_file.split("\n");
     for (let i=0, l=files.length - 1; i<l; i++ ){
         execSync(`\
-            ${git_gooks_env}
+            ${git_gooks_env} \
             'git show ${new_commit}:${files[i]} | \
             eslint --stdin --no-inline-config --fix-dry-run \
             -ignore-path /home/git/product/git-hooks/.eslintignore \

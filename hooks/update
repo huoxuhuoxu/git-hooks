@@ -42,7 +42,7 @@ const main = () => {
         return error("[warning] 项目 %s 不需要进行语法检测", warehourse);
     }
 
-    console.log(__filename__, process.cwd());
+    console.log(__filename, process.cwd());
     console.log(222, execSync(`${git_gooks_env} 'git diff --name-only --diff-filter=d ${old_commit} ${new_commit}'`).toString());
 
 

@@ -35,12 +35,11 @@ const main = () => {
 
     const paths = process.cwd().split("/");
     const warehourse = paths[paths.length - 1].split(".git")[0];
-    const username = paths[paths.length - 4];
 
-    info("[info] 需要对用户 %s 的项目 %s, 分支: %s 进行检查...", username, warehourse, branch);
+    info("[info] 需要对项目 %s, 分支: %s 进行检查...", warehourse, branch);
     
     if (ignore.includes(warehourse)){
-        return error("[warning] 用户 %s 下的项目 %s 不需要进行语法检测", username, warehourse);
+        return error("[warning] 项目 %s 不需要进行语法检测", warehourse);
     }
 
     console.log(222, execSync(`${git_gooks_env} 'git diff --name-only --diff-filter=d ${old_commit} ${new_commit}'`).toString());

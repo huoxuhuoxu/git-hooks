@@ -35,7 +35,7 @@ const main = () => {
 
     const paths = process.cwd().split("/");
     const warehourse = paths[paths.length - 1].split(".git")[0];
-    const username = paths[paths.length - 3];
+    const username = paths[paths.length - 4];
 
     info("[info] 需要对用户 %s 的项目 %s, 分支: %s 进行检查...", username, warehourse, branch);
     

@@ -49,7 +49,7 @@ const main = () => {
                 'git show ${new_commit}:${files[i]} | \
                 eslint \
                 --stdin \
-                --stdin-filename=${files[i]}
+                --stdin-filename=${files[i]} \
                 --no-inline-config \
                 --ignore-path /home/git/product/git-hooks/.eslintignore \
                 -c /home/git/product/git-hooks/.eslintrc.js'\

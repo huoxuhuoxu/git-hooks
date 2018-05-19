@@ -197,7 +197,7 @@ class DeployProject {
             await go();
         }
 
-        return info("[info] all success ...");
+        return info("[info] 通知完成 ...");
         
     }
 
@@ -244,8 +244,9 @@ class PostReceive {
     
                 process.stdin.on('end', () => {
                     const arr = chunks.join("").trim().split(" ");
-                    const branchs = arr.splice(2);
                     console.log("2222222", arr);
+                    
+                    const branchs = arr.splice(2);
                     resolve(branchs);
                 });
             });

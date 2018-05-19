@@ -1,6 +1,6 @@
 #!/usr/local/node/bin/node
 
-require("dotenv").config({path: "/home/git/product/git-hooks/.env"});
+require("../libs/init");
 
 const execSync = require("child_process").execSync;
 const fs = require("fs");
@@ -23,7 +23,17 @@ const { info, warn, error } = require("../libs/colors");
 
 const lint = {
     ".js": {
-        name: "eslint"
+        name: "eslint",
+        getSentence: (commit_id, file_path, show_filename = "") => {
+            return `'git show ${commit_id}:${file_path} | \
+                eslint \
+                --stdin \
+                --stdin-filename=${show_filename} \
+                --no-inline-config \
+                --ignore-path ${process.env.eslint_ignore_path} \
+                -c ${process.env.eslint_config} | cat' \
+            `
+        }
     }
 }
 
@@ -53,24 +63,17 @@ const main = () => {
 
         for (let i=0, l=files.length - 1; i<l; i++ ){
             const file_path = files[i];
-            info("[info] 检查文件 %s", file_path);
-            try {
+            const extname = path.extname(file_path);
+            if (extname in lint){
+                info("[info] 检查文件 %s", file_path);
                 error(execSync(`\
                     ${git_hooks_env} \
-                    'git show ${new_commit}:${file_path} | \
-                    eslint \
-                    --stdin \
-                    --stdin-filename="" \
-                    --no-inline-config \
-                    --ignore-path /home/git/product/git-hooks/.eslintignore \
-                    -c /home/git/product/git-hooks/.eslintrc.js | cat'\
+                    ${lint[extname]["getSentence"](new_commit, file_path)} \
                 `).toString());
-            }catch(err){
-                console.log("..", err.message || err.toString());
-            }        
+                continue;
+            }
+            warn("[warning] 过滤文件: %s", file_path);
         }
-
-        // return info()
 
     }
 

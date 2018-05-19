@@ -47,7 +47,7 @@ const main = () => {
             console.log(execSync(`\
                 ${git_gooks_env} \
                 'git show ${new_commit}:${files[i]} | \
-                eslint \
+                /usr/local/node/bin/node /usr/local/node/bin/eslint \
                 --stdin \
                 --stdin-filename=${files[i]} \
                 --no-inline-config \

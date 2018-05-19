@@ -11,6 +11,8 @@ const { info, warn, error } = require("../libs/colors");
 /**
  *  @describe
  *      push代码时进行语法检测
+ *      只有检测不存在error, 进程结束状态码 0, push成功, 其他 1, push失败
+ *      
  * 
  *      eslint_config_path: eslint       配置检测文件的路径
  *      eslint_ignore_path: eslintignore 配置过滤文件的路径

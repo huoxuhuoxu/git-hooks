@@ -29,8 +29,6 @@ const ignore = [];
 
 const main = () => {
 
-    console.log(process.argv);
-    
     const [ , , branch, old_commit, new_commit ] = process.argv;
 
     const paths = process.cwd().split("/");
@@ -42,9 +40,7 @@ const main = () => {
         return error("[warning] 项目 %s 不需要进行语法检测", warehourse);
     }
 
-    console.log(__filename, process.cwd());
     console.log(222, execSync(`${git_gooks_env} 'git diff --name-only ${old_commit} ${new_commit}'`).toString());
-
 
 };
 

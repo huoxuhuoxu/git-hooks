@@ -2,3 +2,7 @@ ips:
   - http://127.0.0.1:3034
 api_post_receive: /api/post-receive
 api_is_running: /api/is-running
+git_hooks_env: "\
+  export PATH=/usr/local/node/bin:/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/bin \
+  && unset GIT_DIR \
+  && bash -c"

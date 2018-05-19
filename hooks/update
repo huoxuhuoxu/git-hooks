@@ -53,6 +53,13 @@ const main = () => {
     console.log(process.argv);
 
     const [ , , branch, old_commit, new_commit ] = process.argv;
+
+    // push新的分支时, $id为全0
+    if (old_commit === "0000000000000000000000000000000000000000"){
+        warn("[resul] 第一次push, 不做检测, 直接通过 ... ");
+        return 0;
+    }
+
     const paths = process.cwd().split("/");
     const warehourse = paths[paths.length - 1].split(".git")[0];
     

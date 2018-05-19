@@ -1,6 +1,5 @@
 #!/usr/local/node/bin/node
 
-require("dotenv").config();
 
 const execSync = require("child_process").execSync;
 const fs = require("fs");
@@ -32,6 +31,9 @@ const ignore = [];
 
 
 const main = () => {
+
+    require("dotenv").config();
+    
 
     console.log(".......");
     console.log(process.env);

@@ -49,10 +49,9 @@ const lint = {
 const main = () => {
 
     const config_pathanme = path.resolve(__dirname, "../config.yaml"); 
-
-    console.log(process.argv);
-
     const [ , , branch, old_commit, new_commit ] = process.argv;
+
+    console.log("目前commit_id: %s, 新的commit_id: %s", old_commit, new_commit);
 
     // push新的分支时, $id为全0
     if (old_commit === "0000000000000000000000000000000000000000"){

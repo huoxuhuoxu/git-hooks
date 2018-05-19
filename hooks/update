@@ -15,6 +15,7 @@ const lint = {
 
 const main = () => {
     
+    
     console.log(process.argv);
 
 };

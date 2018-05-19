@@ -7,3 +7,6 @@
 require("dotenv").config({path: "/home/git/product/git-hooks/.env"});
 
 
+
+
+console.log(111)

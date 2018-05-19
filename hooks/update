@@ -47,7 +47,10 @@ const main = () => {
             console.log(execSync(`\
                 ${git_gooks_env} \
                 'git show ${new_commit}:${files[i]} | \
-                eslint --stdin --no-inline-config --fix-dry-run \
+                eslint \
+                --stdin \
+                --stdin-filename=${files[i]}
+                --no-inline-config \
                 --ignore-path /home/git/product/git-hooks/.eslintignore \
                 -c /home/git/product/git-hooks/.eslintrc.js'\
             `).toString());

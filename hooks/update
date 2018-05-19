@@ -20,6 +20,7 @@ const main = () => {
 };
 
 
+console.log("... 测试脚本是否触发了...");
 
 {
     if ( !module.parents ){

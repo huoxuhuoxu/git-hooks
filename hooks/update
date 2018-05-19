@@ -43,13 +43,15 @@ const main = () => {
     const s_change_file = execSync(`${git_gooks_env} 'git diff --name-only ${old_commit} ${new_commit}'`).toString();
     const files = s_change_file.split("\n");
     for (let i=0, l=files.length - 1; i<l; i++ ){
+        const file_path = files[i];
+        info("[info] 检查文件 %s", file_path);
         try {
             console.log(execSync(`\
                 ${git_gooks_env} \
-                'git show ${new_commit}:${files[i]} | \
+                'git show ${new_commit}:${file_path} | \
                 eslint \
                 --stdin \
-                --stdin-filename=${files[i]} \
+                --stdin-filename=${file_path} \
                 --no-inline-config \
                 --ignore-path /home/git/product/git-hooks/.eslintignore \
                 -c /home/git/product/git-hooks/.eslintrc.js'\

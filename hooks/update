@@ -18,6 +18,9 @@ const { info, warn, error } = require("../libs/colors");
  *      ignore: 过滤，不需要进行检查的项目
  *      
  * 
+ *  @function main
+ *      @return int
+ * 
  */
 
 
@@ -56,6 +59,7 @@ const main = () => {
 
         const f = fs.readFileSync(config_pathanme);
         const { git_hooks_env } = yaml.safeLoad(f); 
+        const b_error = false;
 
         // 获取有修改的文件，e.g "hooks/update\nhooks/post-receive\n"
         const s_change_file = execSync(`${git_hooks_env} 'git diff --name-only ${old_commit} ${new_commit}'`).toString();
@@ -66,15 +70,25 @@ const main = () => {
             const extname = path.extname(file_path);
             if (extname in lint){
                 info("[info] 检查文件 %s", file_path);
-                error(execSync(`\
+                const resul = execSync(`\
                     ${git_hooks_env} \
                     ${lint[extname]["getSentence"](new_commit, file_path)} \
-                `).toString());
+                `).toString();
+
+                if (resul){
+                    error(resul);
+                    b_error = true;
+                } else {
+                    info("[info] pass");
+                }
+                
                 continue;
             }
             warn("[warning] 过滤文件: %s", file_path);
         }
 
+        if (b_error) error("语法检测 不通过, push失败 ...");
+        return b_error;
     }
 
     error("[error] 配置文件不存在或无读取权限, 检查项目 %s 失败", warehourse);
@@ -87,9 +101,10 @@ const main = () => {
 
         (() => {
             try {
-                main();
+                return ~~main();
             } catch(err){
                 error("[error] 发生了错误", err.toString());
+                return 1;
             }
 
         })();

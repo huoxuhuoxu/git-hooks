@@ -53,7 +53,7 @@ const main = () => {
     const paths = process.cwd().split("/");
     const warehourse = paths[paths.length - 1].split(".git")[0];
 
-    console.log("项目: %s\r\n, 目前commit_id: %s, \r\n新的commit_id: %s\r\n", warehourse, old_commit, new_commit);
+    console.log("项目: %s \r\n目前commit_id: %s \r\n新的commit_id: %s \r\n", warehourse, old_commit, new_commit);
 
     // push新的分支时, $id为全0
     if (old_commit === "0000000000000000000000000000000000000000"){

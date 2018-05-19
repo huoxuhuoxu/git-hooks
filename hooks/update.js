@@ -1,5 +1,6 @@
 #!/usr/local/node/bin/node
 
+require("dotenv").config({path: "/home/git/product/git-hooks/.env"});
 
 const execSync = require("child_process").execSync;
 const fs = require("fs");
@@ -30,16 +31,7 @@ const ignore = [];
 
 const main = () => {
 
-    require("dotenv").config({path: "/home/git/product/git-hooks/.env"});
-    
-
-    console.log(".......");
-    console.log(process.env);
-    console.log(process.env.hooks_dirname, process.env.config_filename);
-
     const config_pathanme = path.resolve(process.env.hooks_dirname, process.env.config_filename); 
-
-    console.log("222", config_pathanme);
 
     const [ , , branch, old_commit, new_commit ] = process.argv;
     const paths = process.cwd().split("/");

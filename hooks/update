@@ -46,7 +46,7 @@ const main = () => {
         const file_path = files[i];
         info("[info] 检查文件 %s", file_path);
         try {
-            console.log(execSync(`\
+            error(execSync(`\
                 ${git_gooks_env} \
                 'git show ${new_commit}:${file_path} | \
                 eslint \

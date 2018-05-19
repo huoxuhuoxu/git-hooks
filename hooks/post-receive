@@ -11,7 +11,15 @@ const { is_exists } = require("../libs/files");
 
 
 /**
- *  @readme
+ *  @describe
+ *      用户push项目成功后，通知各主机内的此项目更新代码
+ * 
+ * 
+ *  @function 
+ *      get_config: 获取配置文件, 如果不存在直接报错, 结束
+ * 
+ * 
+ *  @class
  *      GitHookProduct: 自动化部署项目(hooks部分) 的 自动化部署处理方案, 自身部署自身
  *          git_hooks_env: 给git-hooks的环境变量    
  *          deploy_pathname: 需要执行的其他配置
@@ -27,19 +35,33 @@ const { is_exists } = require("../libs/files");
  */
 
 
+
 // 自动化部署系统 - 项目路径
 const hooks_dirname =  "/home/git/product/git-hooks";
+
+
+// 获取配置文件内的{ key - value }
+const get_config = () => {
+    const config_pathanme = path.resolve(hooks_dirname, "./config.yaml");
+    if (is_exists(config_pathanme)){
+
+        const f = fs.readFileSync(config_pathanme);
+        const task = yaml.safeLoad(f);
+
+        return task;
+    }
+
+    throw Error(`配置文件 ${config_pathanme} 不存在, 请检查 ...`);
+    
+};
+
 
 class GitHookProject {
 
     constructor (branchs){
 
-        this.git_hooks_env = "\
-            export PATH=/usr/local/node/bin:/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/bin \
-            && unset GIT_DIR \
-            && bash -c";
-
-        this.deploy_pathname = "deploy.yaml";
+        const task = get_config();
+        this.git_hooks_env = task.git_hooks_env;
 
         this.branchs = branchs;
 
@@ -53,7 +75,8 @@ class GitHookProject {
         info("[info] 拉取更新");
         console.log(execSync(`${this.git_hooks_env} 'git pull'`).toString());
 
-        const deploy_pathname = this.deploy_pathname;
+        // 部署文件
+        const deploy_pathname = "deploy.yaml";
         info("[info] 检查部署文件: %s 是否存在 ...", deploy_pathname);
 
         if (is_exists(deploy_pathname)){
@@ -87,9 +110,6 @@ class DeployProject {
         this.warehourse = warehourse;
         this.branchs = branchs;
 
-        // 分布式 - 配置文件
-        this.config = "config.yaml";
-    
     }
 
     async __notice_hosts (task){
@@ -168,29 +188,17 @@ class DeployProject {
 
     async run (){
 
-        const config_pathanme = path.resolve(hooks_dirname, this.config);
-        
-        info("[info] 检查配置文件 %s 是否存在", config_pathanme);
+        const task = get_config();
 
-        if (is_exists(config_pathanme)){
-
-            info("[info] 配置文件 %s 存在", config_pathanme);
-
-            const f = fs.readFileSync(config_pathanme);
-            const task = yaml.safeLoad(f);
-
-            if (task.ips.length){
-                const go = this.warehourse !== "hooks-service" 
-                    ? this.__notice_hosts.bind(this, task) 
-                    : this.__notice_listener_service.bind(this, task);
-                await go();
-            }
-
-            return info("[info] all success ...");
-
+        if (task.ips.length){
+            const go = this.warehourse !== "hooks-service" 
+                ? this.__notice_hosts.bind(this, task) 
+                : this.__notice_listener_service.bind(this, task);
+            await go();
         }
+
+        return info("[info] all success ...");
         
-        error("[warning] 根据配置文件通知IPs，更新项目代码失败，不存在配置文件 %s, end ...", config_pathanme);
     }
 
 }
@@ -198,21 +206,15 @@ class DeployProject {
 class PostReceive {
 
     constructor (branchs){
-        this.warehourse = null;
         this.branchs = branchs;
-    }
 
-    // 获取仓库名称
-    __getWarehourseName (){
-
+        // 获取仓库名称
         let paths = process.cwd().split("/");
         this.warehourse = paths[paths.length - 1].split(".git")[0];
-
     }
 
     run (){
 
-        this.__getWarehourseName();
         info("[info] push仓库名: %s, 需要更新的分支: %s", this.warehourse, this.branchs.join(" , "));
 
         if (this.warehourse === "git-hooks") return new GitHookProject(this.branchs).run();
@@ -228,6 +230,7 @@ class PostReceive {
 
         (async () => {
             
+            // 从stdin传入参数
             // 获取push的分支, 可以一次push多个分支
             process.stdin.setEncoding('utf8');
             const branchs = await new Promise(resolve => {
@@ -242,6 +245,7 @@ class PostReceive {
                 process.stdin.on('end', () => {
                     const arr = chunks.join("").trim().split(" ");
                     const branchs = arr.splice(2);
+                    console.log("2222222", arr);
                     resolve(branchs);
                 });
             });

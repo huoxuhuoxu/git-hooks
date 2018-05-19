@@ -41,7 +41,7 @@ const main = () => {
     }
 
     const s_change_file = execSync(`${git_gooks_env} 'git diff --name-only ${old_commit} ${new_commit}'`).toString();
-    const files = change_files.split("\n");
+    const files = s_change_file.split("\n");
     for (let i=0, l=files.length - 1; i<l; i++ ){
         execSync(`
             ${git_gooks_env}

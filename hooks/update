@@ -1,0 +1,35 @@
+#!/usr/local/node/bin/node
+
+const { info, error } = require("../libs/colors");
+
+
+const lint = {
+    ".js": {
+        name: "eslint",
+        env: "\
+        export PATH=/usr/local/node/bin:/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/bin \
+        && unset GIT_DIR \
+        && bash -c"
+    }
+}
+
+const main = () => {
+    
+    console.log(process.argv);
+
+};
+
+{
+    if ( !module.parents ){
+
+        (() => {
+            try {
+                main();
+            } catch(err){
+                error("[error] 发生了错误", err.toString());
+            }
+
+        })();
+
+    }
+}

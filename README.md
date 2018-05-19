@@ -4,7 +4,16 @@
 ##### Rely on
 ----
     nodeJs Version 8.0.0
-    
+
+
+##### Global env
+----
+    eslint Version 3.0.0
+    cnpm/npm Version 5.0.0
+    nginx
+    docker
+
+
 
 ##### Using
 ----
@@ -19,7 +28,7 @@
 
 
 
-##### testing
+##### Testing
 ----
 
 1. npm run test_service: 测试服务器

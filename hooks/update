@@ -43,7 +43,7 @@ const main = () => {
     }
 
     console.log(__filename, process.cwd());
-    console.log(222, execSync(`${git_gooks_env} 'git diff --name-only --diff-filter=d ${old_commit} ${new_commit}'`).toString());
+    console.log(222, execSync(`${git_gooks_env} 'git diff --name-only ${old_commit} ${new_commit}'`).toString());
 
 
 };
@@ -51,7 +51,7 @@ const main = () => {
 // dad6b772b011f584e18bcf8949f49d45b4a730b2
 // a75d5fdafc065f8561f6815ce45c3831cf39478d
 
-// git diff dad6b772b011f584e18bcf8949f49d45b4a730b2 a75d5fdafc065f8561f6815ce45c3831cf39478d
+// git diff 9321e89c488686c7aa4e575b6f0d57406b649966 e5a5fe7444d0800155bf8d79ec5e109505b4f6d5
 
 {
     if ( !module.parents ){

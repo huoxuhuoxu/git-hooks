@@ -54,7 +54,7 @@ const main = () => {
                 --stdin-filename=${file_path} \
                 --no-inline-config \
                 --ignore-path /home/git/product/git-hooks/.eslintignore \
-                -c /home/git/product/git-hooks/.eslintrc.js'\
+                -c /home/git/product/git-hooks/.eslintrc.js | cat'\
             `).toString());
         }catch(err){
             console.log("..", err.message || err.toString());

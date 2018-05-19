@@ -87,8 +87,8 @@ const main = () => {
             warn("[warning] 过滤文件: %s", file_path);
         }
 
-        if (b_error) error("语法检测 不通过, push失败 ...");
-        else info("语法检查通过 ... \r\n")
+        if (b_error) error("[resul] 语法检测 不通过, push失败 ... \r\n");
+        else info("[resul] 语法检查通过 ... \r\n")
         return b_error;
     }
 

@@ -59,7 +59,7 @@ const main = () => {
 
         const f = fs.readFileSync(config_pathanme);
         const { git_hooks_env } = yaml.safeLoad(f); 
-        const b_error = false;
+        let b_error = false;
 
         // 获取有修改的文件，e.g "hooks/update\nhooks/post-receive\n"
         const s_change_file = execSync(`${git_hooks_env} 'git diff --name-only ${old_commit} ${new_commit}'`).toString();

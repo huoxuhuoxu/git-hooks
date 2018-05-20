@@ -46,7 +46,7 @@ const lint = {
             `
         }
     }
-}
+};
 
 
 const main = () => {

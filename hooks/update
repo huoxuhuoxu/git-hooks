@@ -92,7 +92,7 @@ const main = () => {
                 `).toString();
                 
                 if (resul){
-                    const arr_resul = resul.split("\r\n");
+                    const arr_resul = resul.split("\n");
                     console.log(arr_resul);
                     error(resul);
                     b_error = true;

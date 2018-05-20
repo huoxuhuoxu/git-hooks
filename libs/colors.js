@@ -24,4 +24,3 @@ exports.error = (...args) => {
     log("\x1b[91m", ...args, "\x1b[0m");
 };
 
-

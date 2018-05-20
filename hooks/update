@@ -26,6 +26,7 @@ const { info, warn, error } = require("../libs/colors");
  * 
  */
 
+ 
 const eslint_config_path = path.resolve(__dirname, "../.eslintrc.js");
 const eslint_ignore_path = path.resolve(__dirname, "../.eslintignore");
 

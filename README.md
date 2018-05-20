@@ -34,7 +34,7 @@
 
 ##### 安装
 ----
-    1. 在git服务器上部署此项目, 并执行 npm install
+    1. 在git服务器上部署此项目, 并执行 npm install, 需要全局安装 eslint
     2. 新建仓库 
         e.g git init --bare test.git
     3. 进入test.git, 删除仓库内的hooks文件，将此项目下hooks文件与仓库建立 *软链接* 

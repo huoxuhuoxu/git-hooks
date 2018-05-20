@@ -95,6 +95,7 @@ const main = () => {
                     // 错误信息
                     const arr_resul = resul.split("\n");
                     // 拆出'✖ 1 problem (0 errors, 1 warning)'
+                    console.log(arr_resul);
                     const arr_err = arr_resul[arr_resul.length - 3].split("(");
                     console.log(arr_err);
                     if (!!+arr_err[1][0]){

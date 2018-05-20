@@ -17,7 +17,7 @@ exports.info = (...args) => {
 
 exports.warn = (...args) => {
     log("\x1b[33m", ...args, "\x1b[0m");
-};
+}
 
 // red
 exports.error = (...args) => {

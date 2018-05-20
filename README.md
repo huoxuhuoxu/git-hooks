@@ -8,7 +8,7 @@
 
 ##### Flow chart
 ----
-![流程图](https://github.com/huoxuhuoxu/git-hooks/images/nodeJs实现Git分布式自动化部署系统.png "Node.js Git分布式自动化部署系统 流程图")
+![流程图](https://github.com/huoxuhuoxu/git-hooks/blob/master/images/nodeJs%E5%AE%9E%E7%8E%B0Git%E5%88%86%E5%B8%83%E5%BC%8F%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E7%B3%BB%E7%BB%9F.png "Node.js Git分布式自动化部署系统 流程图")
 
 
 ##### Global env

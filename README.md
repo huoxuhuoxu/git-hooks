@@ -10,8 +10,8 @@
 
 ##### 流程图说明
 ----
->   分为两个部分:
->   hooks部分，也就是这个项目
+>   分为两个部分:   
+>   hooks部分，也就是这个项目   
 >   监听进程部分[前往仓库](https://github.com/huoxuhuoxu/hooks-service "监控进程部分仓库")
 
     hooks部分负责存在push时执行脚本

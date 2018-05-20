@@ -41,7 +41,7 @@ const lint = {
                 --stdin \
                 --stdin-filename=${file_path} \
                 --no-inline-config \
-                --ignore-path ${eslint_ignore_path} \
+                --ignore-path=${eslint_ignore_path} \
                 -c ${eslint_config_path} | cat' \
             `
         }

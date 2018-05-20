@@ -40,6 +40,7 @@
     3. 进入test.git, 删除仓库内的hooks文件，将此项目下hooks文件与仓库建立 *软链接* 
         e.g ln -s /xx/git-hooks/hooks /xx/xx/test.git
     4. 修改hooks/post-receive文件40行，将其改成当前此项目在你主机上的路径
+    5. 建议将此项目部署在 git仓库 所在的同一用户下
 
 
 ##### 配置

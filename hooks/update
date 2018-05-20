@@ -94,6 +94,7 @@ const main = () => {
                 if (resul){
                     const arr_resul = resul.split("\n");
                     const arr_err = arr_resul[arr_resul.length - 3].split("(");
+                    console.log(arr_err);
                     if (!!+arr_err[0]){
                         error(resul);
                         b_error = true;

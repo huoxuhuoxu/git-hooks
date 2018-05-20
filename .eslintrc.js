@@ -24,6 +24,7 @@ module.exports = {
         ],
         "strict": "error",
         "no-unused-vars": ["error", { "vars": "all", "args": "none", "ignoreRestSiblings": false }]
+    }
 };
 
 

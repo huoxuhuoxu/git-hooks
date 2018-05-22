@@ -34,25 +34,33 @@
 
 ##### 安装
 ----
-    1. 在git服务器上部署此项目, 并执行 npm install, 需要全局安装 eslint
+    1. 在git服务器上部署此项目, 并安装依赖
+        e.g: npm install
+
+    2. 全局安装 eslint: 
+        e.g: sudo npm install eslint -g
+
     2. 新建仓库 
-        e.g git init --bare test.git
+        e.g: git init --bare test.git
+
     3. 进入test.git, 删除仓库内的hooks文件，将此项目下hooks文件与仓库建立 *软链接* 
-        e.g ln -s /xx/git-hooks/hooks /xx/xx/test.git
-    4. 修改hooks/post-receive文件40行，将其改成当前此项目在你主机上的路径
+        e.g: ln -s /xx/git-hooks/hooks /xx/xx/test.git
+
+    4. 修改hooks/post-receive文件40行，将其改成此项目在你主机上的路径
+
     5. 建议将此项目部署在 git仓库 所在的同一用户下
 
 
 ##### 配置
 ----
     config.yaml
-        ips: 有项目提交需要通知运行了监控进程的主机
-        api_post_receive: hooks - post-receive 触发时调用监控进程的接口
-        api_is_running: 检查监控进程是否正常运作接口，用于自动化部署监控进程项目导致其重启后检查是否成功重启
-        git_hooks_env: git的hooks有独立的环境变量，需要把实际用到的环境变量在运行命令时导入进去
+        ips:                有项目提交需要通知运行了监控进程的主机
+        api_post_receive:   hooks - post-receive 触发时调用监控进程的接口
+        api_is_running:     检查监控进程是否正常运作接口，用于自动化部署监控进程项目导致其重启后检查是否成功重启
+        git_hooks_env:      git的hooks有独立的环境变量，需要把实际用到的环境变量在运行命令时导入进去
 
     deploy.yaml
-        run: 自动化部署此项目时需要运行的脚本, 最终以数组形式遍历执行
+        run:                自动化部署此项目时需要运行的脚本, 最终以数组形式遍历执行
 
 
 
@@ -63,12 +71,12 @@
         post-receive:   push成功后通知各主机更新项目
         update:         push时检测语法
 
-    post-receive:
+    post-receive说明:
         1. 提交的项目就是此项目，切换目录执行git pull
         2. 提交的项目是监控进程项目，通知所有主机更新，并且通知完成后等待5秒，检查监控进程是否成功重启
         3. 提交的项目为其他时, 通知所有主机有项目更新了，传递仓库名称，分支
 
-    update:
+    updates说明:
         找出提交时的commit id与版本库<head>的commit id存在差异的文件，对这些文件进行语法检查,只有检查全部通过，push才会成功
         warning会显示出来但不会阻止提交, 只有error才会阻止提交
 

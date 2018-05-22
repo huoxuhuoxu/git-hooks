@@ -92,19 +92,22 @@ const main = () => {
                 `).toString();
 
                 error(resul);
-                
-                if (resul){
-                    // 错误信息
-                    const arr_resul = resul.split("✖");
-                    // 拆出'✖ 1 problem (0 errors, 1 warning)'
-                    const arr_err = arr_resul[arr_resul.length - 1].split("(");
-                    if (!!+arr_err[1][0]){
-                        b_error = true;
-                    }
-                } else {
+
+                if (!resul){
                     info("[info] 文件: %s pass", file_path);
+                    continue;
                 }
                 
+                // 错误信息
+                const arr_resul = resul.split("✖");
+                // 拆出'✖ 1 problem (0 errors, 1 warning)'
+                const arr_err = arr_resul[arr_resul.length - 1].split("(");
+                if (!!+arr_err[1][0]){
+                    b_error = true;
+                    continue;
+                }
+                
+                warn("[warning] 文件: %s 存在警告项, 但允许检查通过 ...", file_path);
                 continue;
             }
 

@@ -10,10 +10,6 @@
     "test": "node test/test_requests.js",
     "test_service": "node test/app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@120.26.94.5:data/new_git/git-hooks.git"
-  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
